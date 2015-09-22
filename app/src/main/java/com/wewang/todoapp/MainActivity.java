@@ -1,5 +1,6 @@
 package com.wewang.todoapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> aToDoAdapter;
     private ListView lvItems;
     private EditText etEditText;
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,37 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemText = (String) lvItems.getItemAtPosition(position);
+                launchEditView(position, selectedItemText);
+            }
+        });
     }
 
     public void populateArrayItems() {
         todoItems = new ArrayList<>();
         readItems();
         aToDoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todoItems);
+    }
+
+    public void launchEditView(int position, String selectedItemText) {
+        Intent editIntent = new Intent(this, EditItemActivity.class);
+        editIntent.putExtra("position", position);
+        editIntent.putExtra("oldText", selectedItemText);
+        startActivityForResult(editIntent, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            String newText = data.getExtras().getString("newText");
+            int position = data.getExtras().getInt("position", 0);
+            todoItems.set(position, newText);
+            aToDoAdapter.notifyDataSetChanged();
+            writeItems();
+        }
     }
 
     private void readItems() {
