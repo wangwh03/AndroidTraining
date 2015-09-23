@@ -53,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void populateArrayItems() {
-        todoItems = new ArrayList<>();
-        readItems();
+        todoItems = readItems();
         aToDoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todoItems);
     }
 
@@ -81,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void readItems() {
+    private List<ToDoItem> readItems() {
         ToDoItemsDatabaseHelper databaseHelper = ToDoItemsDatabaseHelper.getInstance(this);
-        todoItems = databaseHelper.getAllItems();
+        return databaseHelper.getAllItems();
     }
 
     private void addItem(ToDoItem item) {
