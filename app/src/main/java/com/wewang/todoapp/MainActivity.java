@@ -7,20 +7,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.wewang.todoapp.adapters.ToDoItemAdapter;
 import com.wewang.todoapp.helpers.ToDoItemsDatabaseHelper;
 import com.wewang.todoapp.models.ToDoItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private List<ToDoItem> todoItems;
-    private ArrayAdapter<ToDoItem> aToDoAdapter;
+    private ToDoItemAdapter aToDoAdapter;
     private ListView lvItems;
     private EditText etEditText;
     private final int REQUEST_CODE = 20;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void populateArrayItems() {
         todoItems = readItems();
-        aToDoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todoItems);
+        aToDoAdapter = new ToDoItemAdapter(this, todoItems);
     }
 
     public void launchEditView(int position, ToDoItem selectedItem, long id) {
