@@ -8,8 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
+
 public class EditItemActivity extends AppCompatActivity {
     private EditText etEditText;
+    private EditText etDueDate;
     private int itemPosition;
     private long itemId;
 
@@ -18,10 +24,15 @@ public class EditItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
         etEditText = (EditText) findViewById(R.id.etEditItem);
+        etDueDate = (EditText) findViewById(R.id.etDueDate);
 
         String oldItemText = getIntent().getStringExtra("oldText");
         etEditText.setText(oldItemText);
         etEditText.setSelection(oldItemText.length());
+
+        String oldDueDate = getIntent().getStringExtra("oldDueDate");
+        etDueDate.setText(oldDueDate);
+        etDueDate.setSelection(oldDueDate.length());
 
         itemPosition = getIntent().getIntExtra("position", 0);
         itemId = getIntent().getLongExtra("itemId", 0);
@@ -51,10 +62,13 @@ public class EditItemActivity extends AppCompatActivity {
 
     public void onSubmit(View view) {
         EditText etName = (EditText) findViewById(R.id.etEditItem);
+        EditText etDueDate = (EditText) findViewById(R.id.etDueDate);
+
         Intent data = new Intent();
         data.putExtra("newText", etName.getText().toString());
         data.putExtra("position", itemPosition);
         data.putExtra("itemId", itemId);
+        data.putExtra("newDueDate", etDueDate.getText().toString());
         setResult(RESULT_OK, data);
         finish();
     }

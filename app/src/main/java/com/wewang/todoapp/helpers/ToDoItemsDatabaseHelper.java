@@ -7,9 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.wewang.todoapp.commons.Constants;
 import com.wewang.todoapp.models.ToDoItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
@@ -18,7 +21,7 @@ public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
     private static final String DATABASE_NAME = "toDoItemsDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Table Names
     private static final String TABLE_ITEMS = "items";
@@ -26,7 +29,9 @@ public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
     // Item Table Columns
     private static final String KEY_ITEM_ID = "id";
     private static final String KEY_ITEM_VALUE = "value";
+    private static final String KEY_ITEM_DUE_DATE = "due_date";
 
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DUE_DATE_FORMAT);
 
     private ToDoItemsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +55,8 @@ public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
         String CREATE_POSTS_TABLE = "CREATE TABLE " + TABLE_ITEMS +
                 "(" +
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_ITEM_VALUE + " TEXT" +
+                KEY_ITEM_VALUE + " TEXT," +
+                KEY_ITEM_DUE_DATE + " DATE" +
                 ")";
 
         db.execSQL(CREATE_POSTS_TABLE);
@@ -86,8 +92,11 @@ public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
         try {
             if (cursor.moveToFirst()) {
                 do {
+                    Log.d("fetched data time", cursor.getString(cursor.getColumnIndex(KEY_ITEM_DUE_DATE)));
+                    Date dueDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(KEY_ITEM_DUE_DATE)));
                     ToDoItem newItem =
-                            new ToDoItem(cursor.getString(cursor.getColumnIndex(KEY_ITEM_VALUE)));
+                            new ToDoItem(cursor.getString(cursor.getColumnIndex(KEY_ITEM_VALUE)),
+                                    dueDate);
                     toDoItems.add(newItem);
                 } while(cursor.moveToNext());
             }
@@ -108,6 +117,7 @@ public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_ITEM_VALUE, toDoItem.getValue());
+            values.put(KEY_ITEM_DUE_DATE, dateFormat.format(toDoItem.getDueDate()));
 
             db.insertOrThrow(TABLE_ITEMS, null, values);
             db.setTransactionSuccessful();
@@ -124,6 +134,7 @@ public class ToDoItemsDatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_ITEM_VALUE, toDoItem.getValue());
+        values.put(KEY_ITEM_DUE_DATE, dateFormat.format(toDoItem.getDueDate()));
 
         db.beginTransaction();
         try {

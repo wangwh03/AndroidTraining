@@ -11,9 +11,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.wewang.todoapp.adapters.ToDoItemAdapter;
+import com.wewang.todoapp.commons.Constants;
 import com.wewang.todoapp.helpers.ToDoItemsDatabaseHelper;
 import com.wewang.todoapp.models.ToDoItem;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private ToDoItemAdapter aToDoAdapter;
     private ListView lvItems;
     private EditText etEditText;
+    private EditText etDueDateText;
     private final int REQUEST_CODE = 20;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DUE_DATE_FORMAT);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         lvItems = (ListView) findViewById(R.id.lvItems);
         lvItems.setAdapter(aToDoAdapter);
         etEditText = (EditText) findViewById(R.id.etEditText);
+        etDueDateText = (EditText) findViewById(R.id.etDueDateText);
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
@@ -61,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         editIntent.putExtra("position", position);
         editIntent.putExtra("oldText", selectedItem.getValue());
         editIntent.putExtra("itemId", id);
+        editIntent.putExtra("oldDueDate", dateFormat.format(selectedItem.getDueDate()));
         startActivityForResult(editIntent, REQUEST_CODE);
     }
 
@@ -70,12 +77,16 @@ public class MainActivity extends AppCompatActivity {
             String newText = data.getExtras().getString("newText");
             int position = data.getExtras().getInt("position", 0);
             long itemId = data.getExtras().getLong("itemId", 0);
-
-            ToDoItem updatedItem = new ToDoItem(newText);
-
-            todoItems.set(position, updatedItem);
-            aToDoAdapter.notifyDataSetChanged();
-            updateItem(updatedItem, itemId);
+            String dueDate = data.getExtras().getString("newDueDate");
+            ToDoItem updatedItem = null;
+            try {
+                updatedItem = new ToDoItem(newText, dateFormat.parse(dueDate));
+                todoItems.set(position, updatedItem);
+                aToDoAdapter.notifyDataSetChanged();
+                updateItem(updatedItem, itemId);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -121,10 +132,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onAddItem(View view) {
-        ToDoItem toDoItem = new ToDoItem(etEditText.getText().toString());
+    public void onAddItem(View view) throws ParseException {
+        ToDoItem toDoItem = new ToDoItem(etEditText.getText().toString(),
+                dateFormat.parse(etDueDateText.getText().toString()));
         aToDoAdapter.add(toDoItem);
         etEditText.setText("");
+        etDueDateText.setText("");
         addItem(toDoItem);
     }
 }

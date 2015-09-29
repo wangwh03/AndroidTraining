@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.wewang.todoapp.R;
+import com.wewang.todoapp.commons.Constants;
 import com.wewang.todoapp.models.ToDoItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +19,30 @@ import java.util.List;
  * Created by wewang on 9/27/15.
  */
 public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DUE_DATE_FORMAT);
+
     public ToDoItemAdapter(Context context, List<ToDoItem> toDoItems) {
         super(context, 0, toDoItems);
     }
 
     private static class ViewHolder {
         private TextView value;
+        private TextView dueDate;
 
         public TextView getValue() {
             return value;
         }
 
+        public TextView getDueDate() {
+            return dueDate;
+        }
+
         public void setValue(TextView value) {
             this.value = value;
+        }
+
+        public void setDueDate(TextView dueDate) {
+            this.dueDate = dueDate;
         }
     }
 
@@ -42,12 +55,14 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
-            viewHolder.setValue((TextView) convertView.findViewById(R.id.item));
+            viewHolder.setValue((TextView) convertView.findViewById(R.id.itemValue));
+            viewHolder.setDueDate((TextView) convertView.findViewById(R.id.itemDueDate));
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.getValue().setText(toDoItem.getValue());
+        viewHolder.getDueDate().setText(dateFormat.format(toDoItem.getDueDate()));
 
         return convertView;
     }

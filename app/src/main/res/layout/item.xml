@@ -2,9 +2,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <TextView
-        android:id="@+id/item"
+        android:id="@+id/itemValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="value" />
+    <TextView
+        android:id="@+id/itemDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="dueDate" />
 </LinearLayout>
