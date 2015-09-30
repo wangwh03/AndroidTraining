@@ -20,6 +20,10 @@
             android:name=".EditItemActivity"
             android:label="@string/title_activity_edit_item" >
         </activity>
+        <activity
+            android:name=".FragmentActivity"
+            android:label="@string/title_activity_edit_item" >
+        </activity>
     </application>
 
 </manifest>

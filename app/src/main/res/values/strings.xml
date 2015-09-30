@@ -11,4 +11,5 @@
     <string name="add_due_date">Add due date yyyy-mm-dd</string>
     <string name="due_date">Due Date</string>
     <string name="task_name">Task Name</string>
+    <string name="done">Done</string>
 </resources>

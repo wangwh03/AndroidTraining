@@ -1,8 +1,9 @@
 package com.wewang.todoapp;
 
-import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,19 +15,18 @@ import com.wewang.todoapp.adapters.ToDoItemAdapter;
 import com.wewang.todoapp.commons.Constants;
 import com.wewang.todoapp.helpers.ToDoItemsDatabaseHelper;
 import com.wewang.todoapp.models.ToDoItem;
+import com.wewang.todoapp.views.EditDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements EditDialog.DismissDialogListener {
     private List<ToDoItem> todoItems;
     private ToDoItemAdapter aToDoAdapter;
     private ListView lvItems;
     private EditText etEditText;
     private EditText etDueDateText;
-    private final int REQUEST_CODE = 20;
     private SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DUE_DATE_FORMAT);
 
     @Override
@@ -63,31 +63,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchEditView(int position, ToDoItem selectedItem, long id) {
-        Intent editIntent = new Intent(this, EditItemActivity.class);
-        editIntent.putExtra("position", position);
-        editIntent.putExtra("oldText", selectedItem.getValue());
-        editIntent.putExtra("itemId", id);
-        editIntent.putExtra("oldDueDate", dateFormat.format(selectedItem.getDueDate()));
-        startActivityForResult(editIntent, REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            String newText = data.getExtras().getString("newText");
-            int position = data.getExtras().getInt("position", 0);
-            long itemId = data.getExtras().getLong("itemId", 0);
-            String dueDate = data.getExtras().getString("newDueDate");
-            ToDoItem updatedItem = null;
-            try {
-                updatedItem = new ToDoItem(newText, dateFormat.parse(dueDate));
-                todoItems.set(position, updatedItem);
-                aToDoAdapter.notifyDataSetChanged();
-                updateItem(updatedItem, itemId);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+        FragmentManager fm = getSupportFragmentManager();
+        EditDialog editNameDialog = EditDialog.newInstance("Edit Item", selectedItem.getValue(),
+                dateFormat.format(selectedItem.getDueDate()), position, id);
+        editNameDialog.show(fm, "fragment_edit");
     }
 
     private List<ToDoItem> readItems() {
@@ -139,5 +118,20 @@ public class MainActivity extends AppCompatActivity {
         etEditText.setText("");
         etDueDateText.setText("");
         addItem(toDoItem);
+    }
+
+    @Override
+    public void onFinishEditDialog(String newValue, String newDueDate, int position, long itemId) {
+        try {
+            ToDoItem updatedItem = new ToDoItem(newValue, dateFormat.parse(newDueDate));
+            todoItems.set(position, updatedItem);
+            aToDoAdapter.notifyDataSetChanged();
+            Log.d("main", todoItems.toString());
+            Log.d("position", position+"");
+            Log.d("finish edit", aToDoAdapter.getItem(position).toString());
+            updateItem(updatedItem, itemId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
