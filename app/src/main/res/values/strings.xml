@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDoApp</string>
+    <string name="app_name">To Do List</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -7,7 +7,7 @@
     <string name="add_item">Add a new item</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
     <string name="save">Save</string>
-    <string name="edit_item_label">Edit Item Below:</string>
+    <string name="edit_item_label">Edit Item:</string>
     <string name="add_due_date">Add due date yyyy-mm-dd</string>
     <string name="due_date">Due Date</string>
     <string name="task_name">Task Name</string>

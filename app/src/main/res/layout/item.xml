@@ -9,12 +9,14 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="value" />
+        android:text="value"
+        style="@style/item"/>
     <TextView
         android:id="@+id/itemDueDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="dueDate" />
+        android:text="dueDate"
+        style="@style/item"/>
 </LinearLayout>

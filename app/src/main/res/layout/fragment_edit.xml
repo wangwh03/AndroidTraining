@@ -6,32 +6,25 @@
     <TextView
         android:id="@+id/lblEditItemLabel"
         android:text="@string/edit_item_label"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"/>
+        style="@style/edit_title"/>
 
     <EditText
         android:id="@+id/etOverlayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:inputType="text"
         android:imeOptions="actionDone"
-        android:hint="@string/task_name" />
+        android:hint="@string/task_name"
+        style="@style/edit_field"/>
 
     <EditText
         android:id="@+id/etOverlayDueDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:inputType="date"
-        android:hint="@string/due_date" />
+        android:hint="@string/due_date"
+        style="@style/edit_field"/>
 
 </LinearLayout>

@@ -1,0 +1,46 @@
+<resources>
+
+  <!-- PRIMARY COLORS -->
+  <color name="theme_primary">#53A318</color>
+  <color name="theme_primary_dark">#4b9216</color>
+  <color name="theme_primary_50p">#A9D18C</color>
+
+  <!-- BASIC DEFINITIONS  -->
+  <color name="transparent">#00000000</color>
+  <color name="white_60p">#99ffffff</color>
+  <color name="white">#ffffff</color>
+
+  <color name="grey_dark">#333333</color>
+  <color name="grey_medium">#75787b</color>
+  <color name="grey_medium_light">#999999</color>
+  <color name="grey63">#777777</color>
+  <color name="grey65">#888888</color>
+  <color name="grey86">#e5e5e5</color>
+  <color name="grey94">#f2f2f2</color>
+  <color name="grey99">#f8f8f8</color>
+
+  <color name="grey_disabled">#e6e6e6</color>
+
+  <color name="editable_text_color">@color/grey_dark</color>
+  <color name="noneditable_text_color">@color/grey63</color>
+
+  <color name="green_new">@color/theme_primary</color>
+
+  <!--  PRIMARY BUTTON -->
+  <color name="primary_button_background_pressed">@color/theme_primary_dark</color>
+  <color name="primary_button_background_focused">#80b443</color>
+  <color name="primary_button_background_disabled">@color/theme_primary_50p</color>
+  <color name="primary_button_background_normal">@color/theme_primary</color>
+
+  <color name="primary_button_text_pressed">@color/grey86</color>
+  <color name="primary_button_text_focused">@color/grey99</color>
+  <color name="primary_button_text_disabled">@color/white</color>
+  <color name="primary_button_text_normal">@color/white</color>
+
+  <color name="edit_text_form_text">@color/grey_medium</color>
+
+  <color name="white_background_pressed">@color/grey86</color>
+  <color name="white_background_focused">@color/grey94</color>
+  <color name="white_background_normal">@color/white</color>
+
+</resources>
